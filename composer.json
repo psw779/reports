@@ -1,6 +1,6 @@
 {
     "name": "psw779/reports",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
