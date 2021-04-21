@@ -1,0 +1,13 @@
+{
+    "name": "psw779/reports",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "psw779",
+            "email": "psw779@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
