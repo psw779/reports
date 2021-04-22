@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace psw779\reports\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
-use App\Models\Report;
-use App\Models\ReportCategory;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use psw779\reports\Models\Report;
+use psw779\reports\Models\ReportCategory;
 
 class ReportController extends Controller {
 
     public function __construct() {
         if (config('report.auth', true))
-            $this->middleware('auth');
+            $this->middleware(['web', 'auth']);
     }
 
     private function checkPub($object) {

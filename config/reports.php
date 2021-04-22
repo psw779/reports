@@ -2,7 +2,7 @@
 
 return [
     'auth' => true,
-    'uri' => '',
+    'uri' => 'raporty',
     'adminIds' => [1],
     'page' => [
         'name' => 'MotoLiczby',
