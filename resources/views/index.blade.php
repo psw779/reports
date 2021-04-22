@@ -1,8 +1,10 @@
-@extends('report.app')
+@extends('reports::app')
 @section('content')
-<div class="container-fluid">
+<div class="{{ config('reports.css.container') }}">
     <div class="row">
-        <div class="col-6">
+        <div class="{{ config('reports.css.col') }}">
+
+            <!-- if category -->
             @if ($category)
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb px-2 py-1">
@@ -23,6 +25,8 @@
             </p>
             @endif
             @endif
+
+            <!-- tree -->
             @foreach ($tree as $treeCategory)
             @if ($treeCategory->reports->count() > 0)
             @if (!$category)

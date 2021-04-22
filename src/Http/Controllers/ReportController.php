@@ -11,26 +11,26 @@ use psw779\reports\Models\ReportCategory;
 class ReportController extends Controller {
 
     public function __construct() {
-        if (config('report.auth', true))
+        if (config('reports.auth', true))
             $this->middleware(['web', 'auth']);
     }
 
     private function checkPub($object) {
-        if (!in_array(Auth::id(), config('report.adminIds')) && $object->pub != 1)
+        if (!in_array(Auth::id(), config('reports.adminIds')) && $object->pub != 1)
             return abort(404);
     }
 
     private function getPage($object = null) {
         return [
-            'title' => $object ? implode(' - ', [$object->title, config('report.page.name')]) : config('report.page.title'),
-            'desc' => $object ? $object->desc : config('report.page.desc'),
+            'title' => $object ? implode(' - ', [$object->title, config('reports.page.name')]) : config('reports.page.title'),
+            'desc' => $object ? $object->desc : config('reports.page.desc'),
             'tree' => $this->getTree(),
         ];
     }
 
     private function getTree($category = null) {
         return ReportCategory::with(['reports' => function($query) use ($category) {
-                                $query->when(!in_array(Auth::id(), config('report.adminIds')), function ($query) {
+                                $query->when(!in_array(Auth::id(), config('reports.adminIds')), function ($query) {
                                     return $query->where('pub', 1);
                                 })
                                 ->when($category, function ($query, $category) {
@@ -42,7 +42,7 @@ class ReportController extends Controller {
                         ->when($category, function ($query, $category) {
                             return $query->where('id', $category->id);
                         })
-                        ->when(!in_array(Auth::id(), config('report.adminIds')), function ($query) {
+                        ->when(!in_array(Auth::id(), config('reports.adminIds')), function ($query) {
                             return $query->where('pub', 1);
                         })
                         ->orderBy('priority', 'DESC')
@@ -58,7 +58,7 @@ class ReportController extends Controller {
 
         $tree = $category ? $this->getTree($category) : $page['tree'];
 
-        return view('report.index', compact('category', 'page', 'tree'));
+        return view('reports::index', compact('category', 'page', 'tree'));
     }
 
     public function show(ReportCategory $category, Report $report) {
@@ -68,9 +68,11 @@ class ReportController extends Controller {
         $page = $this->getPage($report);
 
         $reportClass = 'App\\Reports\\' . $report->name;
-        $reportContent = (new $reportClass(['report' => $report]))->run()->render($report->view ?? $report->name, true);
+        $r = (new $reportClass(['report' => $report]))->run();
 
-        return view('report.show', compact('category', 'report', 'page', 'reportContent'));
+        $reportContent = $r->render($report->view ?? $report->name, true);
+
+        return view('reports::show', compact('category', 'report', 'page', 'reportContent', 'r'));
     }
 
     public function sitemap() {

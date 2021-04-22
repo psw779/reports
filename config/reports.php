@@ -5,7 +5,7 @@ return [
     'uri' => 'raporty',
     'adminIds' => [1],
     'page' => [
-        'name' => 'MotoLiczby',
+        'name' => env('REPORTS_PAGE_NAME', 'Page Name'),
         'title' => 'Tytuł',
         'desc' => 'Opis',
     ],
@@ -16,7 +16,7 @@ return [
             ],
         ],
         'assets' => [
-            'path' => env('REPORT_SETTINGS_ASSETS_PATH'),
+            'path' => env('REPORTS_SETTINGS_ASSETS_PATH'),
         ],
     ],
     'cacheSettings' => [
@@ -31,10 +31,11 @@ return [
         'count' => 10,
         'height' => '400px',
     ],
-    'cssClass' => [
+    'css' => [
         'container' => 'container-fluid',
-        'wrapper' => '',
+        'col' => 'col col-lg-9 offset-lg-1 col-xl-8 offset-xl-2',
+        'wrapper' => 'mt-1 mb-3',
+        'chart' => 'border bg-white',
         'table' => 'table table-bordered table-hover bg-white',
-        'chart' => '',
     ]
 ];
